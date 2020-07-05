@@ -8,8 +8,8 @@ pio.renderers.default = 'svg'
 pio.renderers.default = 'browser'
 
 # request user input of station ID
-#station = input('Enter a station ID (KCK, MCU, or SCS) : ')
-station = 'KCK'
+station = input('Enter a station ID (KCK, MCU, or SCS) : ')
+#station = 'KCK'
 # set current working directory
 cdir = '/Users/micahswann/Documents/GitHub/CL_wix/Streams/'
 cdir += '%s' % station
@@ -62,14 +62,19 @@ fig = make_subplots(rows=3, cols=1,shared_xaxes=True,
                     specs=[[{"secondary_y": False}],
                            [{"secondary_y": False}],
                            [{"secondary_y": True}]],
-                           row_heights=[0.5,0.5,0.7])
+                           row_heights=[0.6,0.6,1])
 #Add Traces
 # Precip
 fig.add_trace(
-    go.Scatter(x=precip.index, y=precip.Rain, name="Precipitation [in]",
-     line=dict(color='black')),
+    go.Scatter(mode='markers',x=precip.index, y=precip.Rain, name="Precipitation [in]",
+      marker=dict(
+            color='black',
+            size=5,
+            line=dict(
+                color='black',
+                width=1
+            ))),
     row=1, col=1, secondary_y=False,
-    
 )
     
 # Turbidity
