@@ -62,14 +62,14 @@ fig = make_subplots(rows=3, cols=1,shared_xaxes=True,
                     specs=[[{"secondary_y": False}],
                            [{"secondary_y": False}],
                            [{"secondary_y": True}]],
-                           row_heights=[0.6,0.6,1])
+                           row_heights=[1,1,1])
 #Add Traces
 # Precip
 fig.add_trace(
     go.Scatter(mode='markers',x=precip.index, y=precip.Rain, name="Precipitation [in]",
       marker=dict(
             color='black',
-            size=5,
+            size=2,
             line=dict(
                 color='black',
                 width=1
@@ -174,6 +174,11 @@ fig.update_layout(
                                        side='right')
 )
 
+fig.update_layout(                    annotations = [dict(xref='paper',
+                                        yref='paper',
+                                        x=0.5, y=-0.35,
+                                        showarrow=False,
+                                        text ="This data is PROVISIONAL. 2020 turbidity data has not been QAQC'd. Turbidity sensor was deployed Dec '18 - Jul '19 and Nov '19 - June '20.")])
 # show fig
 #pio.show(fig)
 
