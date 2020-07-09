@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 828px;
+            height: 620px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/LakeCountyBoundary_1.js"></script>
+        <script src="data/CL_Monitoring_Sites_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[38.88576913834633,-123.04961731795152],[39.21677909721779,-122.47991701745546]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'feet',
+            secondaryLengthUnit: 'miles',
+            primaryAreaUnit: 'sqfeet',
+            secondaryAreaUnit: 'sqmiles'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        map.createPane('pane_Background_0');
+        map.getPane('pane_Background_0').style.zIndex = 400;
+        var layer_Background_0 = L.tileLayer('http://a.tile.stamen.com/terrain-background/{z}/{x}/{y}.png', {
+            pane: 'pane_Background_0',
+            opacity: 0.8,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 22
+        });
+        layer_Background_0;
+        map.addLayer(layer_Background_0);
+        function pop_LakeCountyBoundary_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties['Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Area'] !== null ? autolinker.link(feature.properties['Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_LakeCountyBoundary_1_0() {
+            return {
+                pane: 'pane_LakeCountyBoundary_1',
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_LakeCountyBoundary_1');
+        map.getPane('pane_LakeCountyBoundary_1').style.zIndex = 401;
+        map.getPane('pane_LakeCountyBoundary_1').style['mix-blend-mode'] = 'normal';
+        var layer_LakeCountyBoundary_1 = new L.geoJson(json_LakeCountyBoundary_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_LakeCountyBoundary_1',
+            layerName: 'layer_LakeCountyBoundary_1',
+            pane: 'pane_LakeCountyBoundary_1',
+            onEachFeature: pop_LakeCountyBoundary_1,
+            style: style_LakeCountyBoundary_1_0,
+        });
+        bounds_group.addLayer(layer_LakeCountyBoundary_1);
+        map.addLayer(layer_LakeCountyBoundary_1);
+        function pop_CL_Monitoring_Sites_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">Category</th>\
+                        <td>' + (feature.properties['Category'] !== null ? autolinker.link(feature.properties['Category'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Status</th>\
+                        <td>' + (feature.properties['Status'] !== null ? autolinker.link(feature.properties['Status'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Site ID</th>\
+                        <td>' + (feature.properties['Site ID'] !== null ? autolinker.link(feature.properties['Site ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Img_Field'] !== null ? autolinker.link(feature.properties['Img_Field'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CL_Monitoring_Sites_2_0(feature) {
+            switch(String(feature.properties['Category'])) {
+                case 'Met':
+                    return {
+                pane: 'pane_CL_Monitoring_Sites_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(201,197,72,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Stream':
+                    return {
+                pane: 'pane_CL_Monitoring_Sites_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(217,54,92,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Surface':
+                    return {
+                pane: 'pane_CL_Monitoring_Sites_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(66,204,91,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tchain':
+                    return {
+                pane: 'pane_CL_Monitoring_Sites_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(125,13,210,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_CL_Monitoring_Sites_2');
+        map.getPane('pane_CL_Monitoring_Sites_2').style.zIndex = 402;
+        map.getPane('pane_CL_Monitoring_Sites_2').style['mix-blend-mode'] = 'normal';
+        var layer_CL_Monitoring_Sites_2 = new L.geoJson(json_CL_Monitoring_Sites_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CL_Monitoring_Sites_2',
+            layerName: 'layer_CL_Monitoring_Sites_2',
+            pane: 'pane_CL_Monitoring_Sites_2',
+            onEachFeature: pop_CL_Monitoring_Sites_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_CL_Monitoring_Sites_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_CL_Monitoring_Sites_2);
+        map.addLayer(layer_CL_Monitoring_Sites_2);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'CL_Monitoring_Sites<br /><table><tr><td style="text-align: center;"><img src="legend/CL_Monitoring_Sites_2_Met0.png" /></td><td>Met</td></tr><tr><td style="text-align: center;"><img src="legend/CL_Monitoring_Sites_2_Stream1.png" /></td><td>Stream</td></tr><tr><td style="text-align: center;"><img src="legend/CL_Monitoring_Sites_2_Surface2.png" /></td><td>Surface</td></tr><tr><td style="text-align: center;"><img src="legend/CL_Monitoring_Sites_2_Tchain3.png" /></td><td>Tchain</td></tr></table>': layer_CL_Monitoring_Sites_2,'<img src="legend/LakeCountyBoundary_1.png" /> Lake County Boundary': layer_LakeCountyBoundary_1,"Background": layer_Background_0,},{collapsed:false}).addTo(map);L.control.scale({position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
