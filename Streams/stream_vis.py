@@ -105,16 +105,16 @@ fig.add_trace(
 )
 
 # Update yaxis properties
-fig.update_yaxes(title_text="Precipitation [in]",autorange="reversed", row=1, col=1,
+fig.update_yaxes(title_text="Precipitation<br>[in]",autorange="reversed", row=1, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black'))
-fig.update_yaxes(title_text="Turbidity [NTU]", row=2, col=1,
+fig.update_yaxes(title_text="Turbidity<br>[NTU]", row=2, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black'))
-fig.update_yaxes(title_text="Flow [cfs]", secondary_y=False, row=3, col=1,
+fig.update_yaxes(title_text="Flow<br>[cfs]", secondary_y=False, row=3, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black'))
-fig.update_yaxes(title_text="Stage [in]", secondary_y=True, row=3, col=1,
+fig.update_yaxes(title_text="Stage<br>[in]", secondary_y=True, row=3, col=1,
                  tickfont=dict(color='blue'),
                  title_font=dict(color='blue'))
 
@@ -178,7 +178,7 @@ fig.update_layout(                    annotations = [dict(xref='paper',
                                         yref='paper',
                                         x=0.5, y=-0.35,
                                         showarrow=False,
-                                        text ="This data is PROVISIONAL. 2020 turbidity data has not been QAQC'd. Turbidity sensor was deployed Dec '18 - Jul '19 and Nov '19 - June '20.")])
+                                        text ="Select desired date range with slider in the bottom panel above.<br> <b>This data is PROVISIONAL. 2020 turbidity data has not been QAQC'd. Turbidity sensor was deployed Dec '18 - Jul '19 and Nov '19 - June '20.")])
 # show fig
 #pio.show(fig)
 
