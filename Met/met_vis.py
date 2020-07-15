@@ -32,7 +32,7 @@ def moving_average(a, n=24) :
     return ret[n - 1:] / n
 
 # select station
-station = input('Enter a station ID (BKP,BVR,BEK,NIC,NLP,CLO,KNB,JGB,: ')
+station = input('Enter a station ID (BKP,BVR,BEK,NIC,NLP,CLO,KNB,JGB: ')
 
 # set current working directory
 cdir = '/Users/micahswann/Documents/GitHub/CL_wix/Met/'
@@ -54,8 +54,9 @@ elif station == 'NIC':
     name = 'Nice'
 elif station == 'JGB':
     name = 'Jago Bay'
-else:
+elif station == 'NLP':
     name = 'North Lakeport'
+
 
 fileExt =r".mat"
 fname = [_ for _ in os.listdir(cdir) if _.endswith(fileExt)]
@@ -82,14 +83,14 @@ df.columns=['doy','dates','AirT','RH','SWin','WDir','WS','atmP']
 df.set_index('doy')
 
 # daily averages
-n = 24
-nn = 24*5
-df['AirT_avg'] = df.AirT.rolling(n).mean()
-df['RH_avg'] = df.RH.rolling(n).mean()
-df['SWin_avg'] = df.SWin.rolling(nn).mean()
-df['WDir_avg'] = df.WDir.rolling(n).mean()
-df['WS_avg'] = df.WS.rolling(n).mean()
-df['atmP_avg'] = df.atmP.rolling(n).mean()
+#n = 24
+#nn = 24*5
+#df['AirT_avg'] = df.AirT.rolling(n).mean()
+#df['RH_avg'] = df.RH.rolling(n).mean()
+#df['SWin_avg'] = df.SWin.rolling(nn).mean()
+#df['WDir_avg'] = df.WDir.rolling(n).mean()
+#df['WS_avg'] = df.WS.rolling(n).mean()
+#df['atmP_avg'] = df.atmP.rolling(n).mean()
 
 
 # initliaze subplot
@@ -109,11 +110,11 @@ fig.add_trace(
     row=1, col=1, secondary_y=False,
 )   
 # Avg Air Temp
-fig.add_trace(
-    go.Scatter(x=df.doy, y=df.AirT_avg, name="Rolling Avg Air Temp [C]",
-     line=dict(color='red')),
-    row=1, col=1, secondary_y=False,
-)
+#fig.add_trace(
+#    go.Scatter(x=df.doy, y=df.AirT_avg, name="Rolling Avg Air Temp [C]",
+#     line=dict(color='red')),
+#    row=1, col=1, secondary_y=False,
+#)
 
 # RH
 fig.add_trace(
@@ -122,11 +123,11 @@ fig.add_trace(
     row=2, col=1, secondary_y=False,
 )   
 # RH AtmP
-fig.add_trace(
-    go.Scatter(x=df.doy, y=df.RH_avg, name="Rolling Avg Rel Hum [%]",
-     line=dict(color='red')),
-    row=2, col=1, secondary_y=False,
-)
+#fig.add_trace(
+#    go.Scatter(x=df.doy, y=df.RH_avg, name="Rolling Avg Rel Hum [%]",
+#     line=dict(color='red')),
+#    row=2, col=1, secondary_y=False,
+#)
 
 # AtmP
 fig.add_trace(
@@ -135,11 +136,11 @@ fig.add_trace(
     row=3, col=1, secondary_y=False,
 )   
 # Avg AtmP
-fig.add_trace(
-    go.Scatter(x=df.doy, y=df.atmP_avg, name="Rolling Avg Atm Press [kPa]",
-     line=dict(color='red')),
-    row=3, col=1, secondary_y=False,
-)
+#fig.add_trace(
+#    go.Scatter(x=df.doy, y=df.atmP_avg, name="Rolling Avg Atm Press [kPa]",
+#     line=dict(color='red')),
+#    row=3, col=1, secondary_y=False,
+#)
     
 # WS
 fig.add_trace(
@@ -148,11 +149,11 @@ fig.add_trace(
     row=4, col=1, secondary_y=False,
 )   
 # Avg WS
-fig.add_trace(
-    go.Scatter(x=df.doy, y=df.WS_avg, name="Rolling Avg Wind Speed [m/s]",
-     line=dict(color='red')),
-    row=4, col=1, secondary_y=False,  
-)
+#fig.add_trace(
+#    go.Scatter(x=df.doy, y=df.WS_avg, name="Rolling Avg Wind Speed [m/s]",
+#     line=dict(color='red')),
+#    row=4, col=1, secondary_y=False,  
+#)
     
 # WDir
 fig.add_trace(
@@ -174,30 +175,30 @@ fig.add_trace(
     row=6, col=1, secondary_y=False,    
 )
 # Avg SWin
-fig.add_trace(
-    go.Scatter(x=df.doy, y=df.SWin_avg, name="Rolling Avg SWin [w/m^2]",
-     line=dict(color='red')),
-    row=6, col=1, secondary_y=False,
-)    
+#fig.add_trace(
+#    go.Scatter(x=df.doy, y=df.SWin_avg, name="Rolling Avg SWin [w/m^2]",
+#     line=dict(color='red')),
+#    row=6, col=1, secondary_y=False,
+#)    
 
 n = 12
 # Update yaxis properties
-fig.update_yaxes(title_text="Air Temp [C]",row=1, col=1,
+fig.update_yaxes(title_text="Air Temp<br>[C]",row=1, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black',size =n))
-fig.update_yaxes(title_text="RH [%]", row=2, col=1,
+fig.update_yaxes(title_text="RH<br>[%]", row=2, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black',size =n))
-fig.update_yaxes(title_text="AtmP [kPa]", secondary_y=False, row=3, col=1,
+fig.update_yaxes(title_text="AtmP<br>[kPa]", secondary_y=False, row=3, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black',size =n))
-fig.update_yaxes(title_text="Wx [m/s]", secondary_y=False, row=4, col=1,
+fig.update_yaxes(title_text="Wx<br>[m/s]", secondary_y=False, row=4, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black',size =n))
-fig.update_yaxes(title_text="WDir [Deg]", secondary_y=False, row=5, col=1,
+fig.update_yaxes(title_text="WDir<br>[Deg]", secondary_y=False, row=5, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black',size =n))
-fig.update_yaxes(title_text="SWin [w/m^2]", secondary_y=False, row=6, col=1,
+fig.update_yaxes(title_text="SWin<br>[w/m^2]", secondary_y=False, row=6, col=1,
                  tickfont=dict(color='black'),
                  title_font=dict(color='black',size =n))
 
@@ -261,9 +262,7 @@ fig.update_layout(                    annotations = [dict(xref='paper',
                                         yref='paper',
                                         x=0.5, y=-0.35,
                                         showarrow=False,
-                                        text ="This data is PROVISIONAL and has not been QAQC'd")])
-# show fig
-# pio.show(fig)
+                                        text ="Select desired date range with slider in the bottom panel above. <br> <b> This data is PROVISIONAL and has not been QAQC'd")])
 
 #write html
 pio.write_html(fig, file='index.html', auto_open=True)
