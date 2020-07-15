@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         #map {
-            width: 1056px;
+            width: 788px;
             height: 620px;
         }
         </style>
@@ -47,7 +47,7 @@
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[38.92674009055087,-123.04602353749067],[39.18527846567989,-122.47819195798688]]);
+        }).fitBounds([[38.799971731645385,-123.20815955479631],[39.32850043210605,-122.34239787839235]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -65,6 +65,7 @@
         .className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
+            map.setMaxBounds(map.getBounds());
         }
         map.createPane('pane_Background_0');
         map.getPane('pane_Background_0').style.zIndex = 400;
@@ -193,8 +194,29 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <th scope="row">Depth [ft]</th>\
-                        <td>' + (feature.properties['Depth [ft]'] !== null ? autolinker.link(feature.properties['Depth [ft]'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">DEPTH</th>\
+                        <td>' + (feature.properties['DEPTH'] !== null ? autolinker.link(feature.properties['DEPTH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ELEVATION'] !== null ? autolinker.link(feature.properties['ELEVATION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['RUMSEY'] !== null ? autolinker.link(feature.properties['RUMSEY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Elev_ft_R'] !== null ? autolinker.link(feature.properties['Elev_ft_R'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Area'] !== null ? autolinker.link(feature.properties['Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['elev_ft'] !== null ? autolinker.link(feature.properties['elev_ft'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Depth_2'] !== null ? autolinker.link(feature.properties['Depth_2'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
@@ -210,7 +232,7 @@
                 lineJoin: 'bevel',
                 weight: 1.0,
                 fillOpacity: 0,
-                interactive: true,
+                interactive: false,
             }
         }
         map.createPane('pane_LakeBathymetry_3');
@@ -218,7 +240,7 @@
         map.getPane('pane_LakeBathymetry_3').style['mix-blend-mode'] = 'normal';
         var layer_LakeBathymetry_3 = new L.geoJson(json_LakeBathymetry_3, {
             attribution: '',
-            interactive: true,
+            interactive: false,
             dataVar: 'json_LakeBathymetry_3',
             layerName: 'layer_LakeBathymetry_3',
             pane: 'pane_LakeBathymetry_3',
@@ -472,7 +494,7 @@
         function style_Thermistorchain_7_0() {
             return {
                 pane: 'pane_Thermistorchain_7',
-                radius: 7.6,
+                radius: 7.600000000000001,
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -529,7 +551,45 @@
         map.addLayer(layer_Thermistorchain_7);
         var baseMaps = {};
         L.control.layers(baseMaps,{'<img src="legend/Thermistorchain_7.png" /> Thermistorchain': layer_Thermistorchain_7,'<img src="legend/StreamMonitoringSite_6.png" /> Stream Monitoring Site': layer_StreamMonitoringSite_6,'<img src="legend/SurfaceTemperature_5.png" /> Surface Temperature': layer_SurfaceTemperature_5,'<img src="legend/MetStation_4.png" /> Met Station': layer_MetStation_4,'<img src="legend/LakeBathymetry_3.png" /> Lake Bathymetry': layer_LakeBathymetry_3,'<img src="legend/Tributaries_2.png" /> Tributaries': layer_Tributaries_2,'<img src="legend/LakeCountyBoundary_1.png" /> Lake County Boundary': layer_LakeCountyBoundary_1,"Background": layer_Background_0,},{collapsed:false}).addTo(map);L.control.scale({position: 'bottomleft', maxWidth: 100, metric: true, imperial: false, updateWhenIdle: false}).addTo(map);
+        map.on("zoomend", function(){
+
+                if (map.hasLayer(layer_LakeBathymetry_3)) {
+                    if (map.getZoom() <= 13 && map.getZoom() >= 19) {
+                        layer_LakeBathymetry_3.eachLayer(function (layer) {
+                            layer.openTooltip();
+                        });
+                    } else {
+                        layer_LakeBathymetry_3.eachLayer(function (layer) {
+                            layer.closeTooltip();
+                        });
+                    }
+                }
+        });
         setBounds();
+        var i = 0;
+        layer_LakeBathymetry_3.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['NAME'] !== null?String('<div style="color: #000000; font-size: 10pt; font-family: \'.SF NS Text\', sans-serif;">' + layer.feature.properties['NAME']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_LakeBathymetry_3'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+                if (map.hasLayer(layer_LakeBathymetry_3)) {
+                    if (map.getZoom() <= 13 && map.getZoom() >= 19) {
+                        layer_LakeBathymetry_3.eachLayer(function (layer) {
+                            layer.openTooltip();
+                        });
+                    } else {
+                        layer_LakeBathymetry_3.eachLayer(function (layer) {
+                            layer.closeTooltip();
+                        });
+                    }
+                }
         resetLabels([layer_LakeBathymetry_3]);
         map.on("zoomend", function(){
             resetLabels([layer_LakeBathymetry_3]);
