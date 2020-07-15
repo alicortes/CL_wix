@@ -45,7 +45,7 @@ dwr = df
 
 # load in turbidity data
 path = '%s' % station
-path += '_Turb2.csv'
+path += '_Turb.csv'
 df = pd.read_csv(path,
                  header=[0,], index_col=0, parse_dates=True)
 turb = df;
